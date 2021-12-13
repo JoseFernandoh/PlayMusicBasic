@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="PlayMusicBasic:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/PlayMusicBasic_jar</output-path>
+    <root id="archive" name="PlayMusicBasic.jar">
+      <element id="module-output" name="PlayMusicBasic" />
+      <element id="library" level="project" name="javafx-swt" />
+    </root>
+  </artifact>
+</component>

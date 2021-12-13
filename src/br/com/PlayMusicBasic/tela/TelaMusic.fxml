@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="308.0" prefWidth="206.0" styleClass="background" stylesheets="@StyleTela.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.PlayMusicBasic.tela.TelaMusic">
+   <children>
+      <ProgressBar fx:id="pgreceMusic" layoutX="3.0" layoutY="232.0" prefHeight="5.0" prefWidth="200.0" progress="0.0">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets></ProgressBar>
+      <ImageView fitHeight="252.0" fitWidth="206.0" layoutX="3.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <image>
+            <Image url="@imgFundo/img.png" />
+         </image>
+      </ImageView>
+      <HBox layoutY="247.0" prefHeight="47.0" prefWidth="206.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#voltar" style="-fx-background-color: black;">
+               <graphic>
+                  <ImageView fitHeight="27.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
+                     <image>
+                        <Image url="@imgFundo/icon/ProximoVoltar.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <padding>
+                  <Insets left="20.0" right="20.0" top="5.0" />
+               </padding>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#pausePlay" style="-fx-background-color: black;">
+               <graphic>
+                  <ImageView fx:id="imgPausePlay" fitHeight="36.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@imgFundo/icon/Play.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <padding>
+                  <Insets left="20.0" right="20.0" top="5.0" />
+               </padding>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#proximo" style="-fx-background-color: black;">
+               <graphic>
+                  <ImageView fitHeight="27.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@imgFundo/icon/ProximoVoltar.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <padding>
+                  <Insets left="20.0" right="20.0" top="5.0" />
+               </padding>
+            </Button>
+         </children>
+      </HBox>
+      <Slider fx:id="volumePlaymusic" layoutX="178.0" layoutY="33.0" orientation="VERTICAL" value="70.0" />
+      <Label fx:id="nomeMusic" alignment="TOP_LEFT" layoutX="6.0" layoutY="189.0" prefHeight="17.0" prefWidth="200.0" text="Play Music" textAlignment="CENTER">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

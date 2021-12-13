@@ -1,0 +1,14 @@
+.background{
+    -fx-background-color: black;
+}
+.label{
+    -fx-font-size: 14px;
+    -fx-alignment: center;
+    -fx-text-fill : white;
+
+}
+
+.progress-bar > .bar {
+    -fx-background-insets: 1 1 1 1;
+    -fx-padding: 0.20em;
+}
