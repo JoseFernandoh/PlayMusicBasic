@@ -19,7 +19,7 @@ public class ConfigMusic {
 
     public void pegarMusicas(){
         try {
-            Files.walkFileTree(Paths.get(System.getProperty("user.home")+"/Musica"),pegarMusicas);
+            Files.walkFileTree(Paths.get(System.getProperty("user.home")),pegarMusicas);
         } catch (IOException e) {
             e.printStackTrace();
         }
