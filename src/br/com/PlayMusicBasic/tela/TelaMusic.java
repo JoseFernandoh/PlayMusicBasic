@@ -103,6 +103,7 @@ public class TelaMusic implements Initializable {
 
                 if (current / end == 1) {
                     cacelTimeMusic();
+                    proximo();
                 }
             }
         };
