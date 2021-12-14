@@ -22,27 +22,9 @@ public class TelaMusic implements Initializable {
 
     private MediaPlayer mediaPlayer;
     private Media media;
-    private boolean statusPlay = false;
+    private boolean statusPlay;
     private Timer timer;
     private ConfigMusic music;
-
-    Runnable play = new Runnable() {
-        @Override
-        public void run() {
-            imgPausePlay.setImage(new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("imgFundo/icon/Pause.png"))));
-            statusPlay = true;
-            timeMusic();
-        }
-    };
-
-    Runnable pause = new Runnable() {
-        @Override
-        public void run() {
-            imgPausePlay.setImage(new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("imgFundo/icon/Play.png"))));
-            statusPlay = false;
-            cacelTimeMusic();
-        }
-    };
 
     @FXML
     private Label nomeMusic;
@@ -64,19 +46,16 @@ public class TelaMusic implements Initializable {
     }
 
     public void tocarMusica(){
+        statusPlay = false;
         media = new Media(new File(music.audio()).toURI().toString());
         mediaPlayer = new MediaPlayer(media);
         nomeMusic.setText(music.nomeMusic());
-        mediaPlayer.setOnPaused(pause);
-        mediaPlayer.setOnPlaying(play);
         pausePlay();
         volumePlaymusic.valueProperty().addListener((observableValue, number, t1) -> mediaPlayer.setVolume(volumePlaymusic.getValue() * 0.01));
     }
 
     public void calcularTimeMusic(){
         mediaPlayer.pause();
-        cacelTimeMusic();
-        timeMusic();
         Duration time = new Duration((pgreceMusic.getValue()*media.getDuration().toSeconds()) *1000);
         System.out.println(time);
         mediaPlayer.setStartTime(time);
@@ -86,8 +65,14 @@ public class TelaMusic implements Initializable {
     public void pausePlay(){
         if(statusPlay){
             mediaPlayer.pause();
+            imgPausePlay.setImage(new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("imgFundo/icon/Play.png"))));
+            statusPlay = false;
+            cacelTimeMusic();
         }else{
             mediaPlayer.play();
+            imgPausePlay.setImage(new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("imgFundo/icon/Pause.png"))));
+            statusPlay = true;
+            timeMusic();
         }
     }
 
@@ -121,7 +106,7 @@ public class TelaMusic implements Initializable {
             @Override
             public void run() {
                 double current = mediaPlayer.getCurrentTime().toSeconds();
-                double end = media.getDuration().toSeconds();;
+                double end = media.getDuration().toSeconds();
                 pgreceMusic.setValue((current/end));
                 if (current / end == 1) {
                     cacelTimeMusic();
@@ -129,7 +114,6 @@ public class TelaMusic implements Initializable {
                 }
             }
         };
-
         timer.scheduleAtFixedRate(timerTask,1000,1000);
     }
 
