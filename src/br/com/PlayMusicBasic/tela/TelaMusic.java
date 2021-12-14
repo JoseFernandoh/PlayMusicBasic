@@ -4,12 +4,12 @@ import br.com.PlayMusicBasic.config.ConfigMusic;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.net.URL;
@@ -22,9 +22,27 @@ public class TelaMusic implements Initializable {
 
     private MediaPlayer mediaPlayer;
     private Media media;
-    private int statusPausePlay;
+    private boolean statusPlay = false;
     private Timer timer;
     private ConfigMusic music;
+
+    Runnable play = new Runnable() {
+        @Override
+        public void run() {
+            imgPausePlay.setImage(new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("imgFundo/icon/Pause.png"))));
+            statusPlay = true;
+            timeMusic();
+        }
+    };
+
+    Runnable pause = new Runnable() {
+        @Override
+        public void run() {
+            imgPausePlay.setImage(new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("imgFundo/icon/Play.png"))));
+            statusPlay = false;
+            cacelTimeMusic();
+        }
+    };
 
     @FXML
     private Label nomeMusic;
@@ -33,7 +51,7 @@ public class TelaMusic implements Initializable {
     private ImageView imgPausePlay;
 
     @FXML
-    private ProgressBar pgreceMusic;
+    private Slider pgreceMusic;
 
     @FXML
     private Slider volumePlaymusic;
@@ -46,25 +64,30 @@ public class TelaMusic implements Initializable {
     }
 
     public void tocarMusica(){
-        statusPausePlay = 1;
         media = new Media(new File(music.audio()).toURI().toString());
         mediaPlayer = new MediaPlayer(media);
         nomeMusic.setText(music.nomeMusic());
+        mediaPlayer.setOnPaused(pause);
+        mediaPlayer.setOnPlaying(play);
         pausePlay();
         volumePlaymusic.valueProperty().addListener((observableValue, number, t1) -> mediaPlayer.setVolume(volumePlaymusic.getValue() * 0.01));
     }
 
+    public void calcularTimeMusic(){
+        mediaPlayer.pause();
+        cacelTimeMusic();
+        timeMusic();
+        Duration time = new Duration((pgreceMusic.getValue()*media.getDuration().toSeconds()) *1000);
+        System.out.println(time);
+        mediaPlayer.setStartTime(time);
+        mediaPlayer.play();
+    }
+
     public void pausePlay(){
-        if(statusPausePlay == 1){
-            mediaPlayer.play();
-            imgPausePlay.setImage(new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("imgFundo/icon/Pause.png"))));
-            statusPausePlay = 0;
-            timeMusic();
-        }else{
+        if(statusPlay){
             mediaPlayer.pause();
-            imgPausePlay.setImage(new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("imgFundo/icon/Play.png"))));
-            statusPausePlay = 1;
-            cacelTimeMusic();
+        }else{
+            mediaPlayer.play();
         }
     }
 
@@ -98,9 +121,8 @@ public class TelaMusic implements Initializable {
             @Override
             public void run() {
                 double current = mediaPlayer.getCurrentTime().toSeconds();
-                double end = media.getDuration().toSeconds();
-                pgreceMusic.setProgress(current / end);
-
+                double end = media.getDuration().toSeconds();;
+                pgreceMusic.setValue((current/end));
                 if (current / end == 1) {
                     cacelTimeMusic();
                     proximo();
