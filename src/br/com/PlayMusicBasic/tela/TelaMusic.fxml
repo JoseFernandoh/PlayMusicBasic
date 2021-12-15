@@ -89,7 +89,7 @@
          </children>
       </HBox>
       <Slider fx:id="volumePlaymusic" layoutX="279.0" layoutY="31.0" orientation="VERTICAL" prefHeight="185.0" prefWidth="21.0" value="70.0" />
-      <Label fx:id="nomeMusic" alignment="TOP_LEFT" layoutY="251.0" prefHeight="20.0" prefWidth="190.0" text="Play Music" textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <Label fx:id="nomeMusic" alignment="TOP_LEFT" ellipsisString="" layoutY="251.0" prefHeight="20.0" prefWidth="190.0" text="Play Music" textAlignment="CENTER" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
          <font>
             <Font size="11.0" />
          </font>

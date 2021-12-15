@@ -1,6 +1,9 @@
 package br.com.PlayMusicBasic.tela;
 
 import br.com.PlayMusicBasic.config.ConfigMusic;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -23,8 +26,10 @@ public class TelaMusic implements Initializable {
     private MediaPlayer mediaPlayer;
     private Media media;
     private boolean statusPlay;
-    private Timer timer;
     private ConfigMusic music;
+    private Timeline progressMusic;
+    private Timeline nomeRotation;
+    private int number;
 
     @FXML
     private Label nomeMusic;
@@ -55,9 +60,8 @@ public class TelaMusic implements Initializable {
         statusPlay = false;
         media = new Media(new File(music.audio()).toURI().toString());
         mediaPlayer = new MediaPlayer(media);
-        nomeMusic.setText(music.nomeMusic());
+        nomeRotation();
         pausePlay();
-
         volumePlaymusic.valueProperty().addListener((observableValue, number, t1) -> mediaPlayer.setVolume(volumePlaymusic.getValue() * 0.01));
 
         pgreceMusic.valueChangingProperty().addListener((observableValue, number, t1) -> {
@@ -117,26 +121,22 @@ public class TelaMusic implements Initializable {
         resetRepetidor();
     }
 
-    public void timeMusic() {
-        timer = new Timer();
-
-        TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                double current = mediaPlayer.getCurrentTime().toSeconds();
-                double end = media.getDuration().toSeconds();
-                pgreceMusic.setValue((current / end));
-                if (current / end == 1) {
-                    cacelTimeMusic();
-                    proximo();
-                }
+    public void timeMusic(){
+        progressMusic = new Timeline(new KeyFrame(Duration.seconds(1), ev -> {
+            double current = mediaPlayer.getCurrentTime().toSeconds();
+            double end = media.getDuration().toSeconds();
+            pgreceMusic.setValue((current / end));
+            if (current / end == 1) {
+                proximo();
             }
-        };
-        timer.scheduleAtFixedRate(timerTask, 1000, 1000);
+        }));
+        progressMusic.setCycleCount(Animation.INDEFINITE);
+        progressMusic.play();
     }
 
     public void cacelTimeMusic() {
-        timer.cancel();
+        progressMusic.stop();
+        nomeRotation.stop();
     }
 
     public void aleatorioMusic() {
@@ -189,6 +189,20 @@ public class TelaMusic implements Initializable {
             repet = 0;
             repet();
         }
+    }
+
+    public void nomeRotation(){
+        number =0;
+        nomeRotation = new Timeline(new KeyFrame(Duration.millis(150),ev -> {
+            if(number != music.nomeMusic().length()){
+                nomeMusic.setText(music.nomeMusic().substring(number));
+                number ++;
+            }else{
+                number = 0;
+            }
+        }));
+        nomeRotation.setCycleCount(Animation.INDEFINITE);
+        nomeRotation.play();
     }
 
 }

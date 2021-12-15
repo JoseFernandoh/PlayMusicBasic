@@ -30,7 +30,7 @@ public class ConfigMusic {
     }
 
     public String nomeMusic(){
-        return files.get(posicao).getFileName().toString();
+        return "                                                                                    "+files.get(posicao).getFileName().toString();
     }
 
     public void setPosicao(int posicao) {
