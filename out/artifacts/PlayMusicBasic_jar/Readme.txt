@@ -1,3 +1,0 @@
-Pra Executar o Play Music aperte no "PlayMusic.bat"
-Ira tocar todas as musicas que estao na pasta "Musicas" do Windows
-Pasta padrao onde fica localizada as Musicas...

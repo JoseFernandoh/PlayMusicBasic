@@ -49,7 +49,6 @@ public class TelaMusic implements Initializable {
         music = new ConfigMusic();
         aleatorioMusic();
         tocarMusica();
-        System.out.println(music.getPosicao());
     }
 
     public void tocarMusica() {
