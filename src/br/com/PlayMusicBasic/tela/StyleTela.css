@@ -8,7 +8,9 @@
 
 }
 
-.progress-bar > .bar {
+.slider .track {
     -fx-background-insets: 1 1 1 1;
-    -fx-padding: 0.20em;
+    -fx-padding: 0.25em;
 }
+
+
