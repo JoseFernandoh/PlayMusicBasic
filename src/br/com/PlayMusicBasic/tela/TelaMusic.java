@@ -210,7 +210,7 @@ public class TelaMusic implements Initializable {
             if(! pgreceMusic.isValueChanging()){
                 pgreceMusic.setValue(t1.toSeconds());
                 timeInicio.setText(music.timerMusic((long) t1.toSeconds()));
-                if(pgreceMusic.getMax() - t1.toSeconds() <= 0.1){
+                if(pgreceMusic.getMax() - t1.toSeconds() <= 0.3){
                     proximo();
                 }
             }
