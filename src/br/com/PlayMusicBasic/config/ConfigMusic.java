@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Duration;
 import java.util.List;
 
 public class ConfigMusic {
@@ -31,6 +32,11 @@ public class ConfigMusic {
 
     public String nomeMusic() {
         return "                                                                                    " + files.get(posicao).getFileName().toString();
+    }
+
+    public String timerMusic(long timer){
+        Duration total = Duration.ofSeconds(timer);
+        return String.format("%02d:%02d\n" ,total.toMinutesPart(),total.toSecondsPart());
     }
 
     public void setPosicao(int posicao) {

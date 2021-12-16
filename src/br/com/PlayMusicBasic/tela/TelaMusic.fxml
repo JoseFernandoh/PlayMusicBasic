@@ -17,7 +17,7 @@
             <Image url="@imgFundo/img.png" />
          </image>
       </ImageView>
-      <Slider fx:id="pgreceMusic" layoutX="20.0" layoutY="300.0" max="1.0" styleClass="progressSlider" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
+      <Slider fx:id="pgreceMusic" layoutX="20.0" layoutY="306.0" styleClass="progressSlider" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
@@ -89,10 +89,12 @@
          </children>
       </HBox>
       <Slider fx:id="volumePlaymusic" layoutX="290.0" layoutY="27.0" orientation="VERTICAL" prefHeight="185.0" prefWidth="21.0" value="70.0" />
-      <Label fx:id="nomeMusic" alignment="TOP_LEFT" ellipsisString="" layoutY="251.0" prefHeight="20.0" prefWidth="190.0" text="Play Music" textAlignment="CENTER" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+      <Label fx:id="nomeMusic" alignment="TOP_LEFT" ellipsisString="" layoutX="11.0" layoutY="240.0" prefHeight="20.0" prefWidth="190.0" text="Play Music" textAlignment="CENTER" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="9.0">
          <font>
             <Font size="11.0" />
          </font>
       </Label>
+      <Label fx:id="timeInicio" alignment="CENTER" layoutX="5.0" layoutY="266.0" prefHeight="26.0" prefWidth="45.0" text="00:00" AnchorPane.leftAnchor="5.0" />
+      <Label fx:id="timeFinal" alignment="CENTER" layoutX="287.0" layoutY="266.0" prefHeight="26.0" prefWidth="45.0" text="00:00" AnchorPane.rightAnchor="5.0" />
    </children>
 </AnchorPane>

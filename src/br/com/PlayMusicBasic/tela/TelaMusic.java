@@ -4,8 +4,6 @@ import br.com.PlayMusicBasic.config.ConfigMusic;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -18,7 +16,9 @@ import javafx.util.Duration;
 
 import java.io.File;
 import java.net.URL;
-import java.util.*;
+import java.util.Objects;
+import java.util.Random;
+import java.util.ResourceBundle;
 
 public class TelaMusic implements Initializable {
 
@@ -26,16 +26,21 @@ public class TelaMusic implements Initializable {
     private int repet = 1;
     private int repetidor;
     private MediaPlayer mediaPlayer;
-    private Media media;
     private boolean statusPlay;
     private ConfigMusic music;
-    private Timeline progressMusic;
     private Timeline nomeRotation;
     private int number;
-    private static final double MIN_CHANGE = 500;
+    private static final double MIN_CHANGE = 0.5;
 
     @FXML
     private Label nomeMusic;
+
+    @FXML
+    private Label timeFinal;
+
+    @FXML
+    private Label timeInicio;
+
 
     @FXML
     private ImageView imgaleatorio;
@@ -61,29 +66,16 @@ public class TelaMusic implements Initializable {
 
     public void tocarMusica() {
         statusPlay = false;
-        media = new Media(new File(music.audio()).toURI().toString());
+        Media media = new Media(new File(music.audio()).toURI().toString());
         mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.totalDurationProperty().addListener(((observableValue, duration, t1) -> {
+            pgreceMusic.setMax(t1.toSeconds());
+            timeFinal.setText(music.timerMusic((long) t1.toSeconds()));
+        }));
+        timeMusic();
         nomeRotation();
         pausePlay();
         volumePlaymusic.valueProperty().addListener((observableValue, number, t1) -> mediaPlayer.setVolume(volumePlaymusic.getValue() * 0.01));
-
-        pgreceMusic.valueProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                if(!pgreceMusic.isValueChanging()){
-                    double time = mediaPlayer.getCurrentTime().toSeconds();
-                    double end = media.getDuration().toSeconds();
-                    System.out.println(time / end);
-                    System.out.println(t1.doubleValue());
-                    System.out.println(Math.abs(time - t1.doubleValue()));
-                    System.out.println("--------------------------------");
-                    if(Math.abs(time - t1.doubleValue()) > MIN_CHANGE){
-                        mediaPlayer.seek(Duration.millis(t1.doubleValue()));
-                    }
-
-                }
-            }
-        });
     }
 
     public void pausePlay() {
@@ -91,18 +83,18 @@ public class TelaMusic implements Initializable {
             mediaPlayer.pause();
             imgPausePlay.setImage(new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("imgFundo/icon/Play.png"))));
             statusPlay = false;
-            cacelTimeMusic();
         } else {
             mediaPlayer.play();
             imgPausePlay.setImage(new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("imgFundo/icon/Pause.png"))));
             statusPlay = true;
-            timeMusic();
         }
     }
 
-    public void limparmideia() {
-        cacelTimeMusic();
+    public void tocarMusicaConfig() {
         mediaPlayer.stop();
+        nomeRotation.stop();
+        tocarMusica();
+        resetRepetidor();
     }
 
     public void proximo() {
@@ -116,10 +108,7 @@ public class TelaMusic implements Initializable {
                 music.setPosicao(0);
             }
         }
-        limparmideia();
-        nomeRotation.stop();
-        tocarMusica();
-        resetRepetidor();
+        tocarMusicaConfig();
     }
 
     public void voltar() {
@@ -131,27 +120,7 @@ public class TelaMusic implements Initializable {
                 music.setPosicao(music.getPosicao() - 1);
             }
         }
-        limparmideia();
-        nomeRotation.stop();
-        tocarMusica();
-        resetRepetidor();
-    }
-
-    public void timeMusic() {
-        progressMusic = new Timeline(new KeyFrame(Duration.seconds(1), ev -> {
-            double current = mediaPlayer.getCurrentTime().toSeconds();
-            double end = media.getDuration().toSeconds();
-            pgreceMusic.setValue((current / end));
-            if (current / end == 1) {
-                proximo();
-            }
-        }));
-        progressMusic.setCycleCount(Animation.INDEFINITE);
-        progressMusic.play();
-    }
-
-    public void cacelTimeMusic() {
-        progressMusic.stop();
+        tocarMusicaConfig();
     }
 
     public void aleatorioMusic() {
@@ -220,4 +189,28 @@ public class TelaMusic implements Initializable {
         nomeRotation.play();
     }
 
+    public void timeMusic() {
+
+        pgreceMusic.valueChangingProperty().addListener(((observableValue, aBoolean, t1) -> {
+            if(!t1){
+                mediaPlayer.seek(Duration.seconds(pgreceMusic.getValue()));
+            }
+        }));
+
+        pgreceMusic.valueProperty().addListener(((observableValue, number1, t1) -> {
+            if(! pgreceMusic.isValueChanging()){
+                double time = mediaPlayer.getCurrentTime().toSeconds();
+                if(Math.abs(time - t1.doubleValue())> MIN_CHANGE){
+                    mediaPlayer.seek(Duration.seconds(t1.doubleValue()));
+                }
+            }
+        }));
+
+        mediaPlayer.currentTimeProperty().addListener(((observableValue, number1, t1) -> {
+            if(! pgreceMusic.isValueChanging()){
+                pgreceMusic.setValue(t1.toSeconds());
+                timeInicio.setText(music.timerMusic((long) t1.toSeconds()));
+            }
+        }));
+    }
 }
