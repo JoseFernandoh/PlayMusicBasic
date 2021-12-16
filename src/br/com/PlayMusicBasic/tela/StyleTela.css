@@ -12,8 +12,13 @@
     -fx-padding: 0.25em;
 }
 
-.progressSlider {
+.labelNmeMusic{
+    -fx-font-family: "Lucida Calligraphy";
+    -fx-font-style: italic;
+}
 
+.labelTimeMusic{
+    -fx-font-family: "OCR A Extended";
 }
 
 

@@ -6,10 +6,13 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
@@ -56,6 +59,12 @@ public class TelaMusic implements Initializable {
 
     @FXML
     private Slider volumePlaymusic;
+
+    @FXML
+    private HBox hboxButoes;
+
+    @FXML
+    private AnchorPane paneTela;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
