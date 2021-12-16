@@ -4,6 +4,8 @@ import br.com.PlayMusicBasic.config.ConfigMusic;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -21,7 +23,7 @@ import java.util.*;
 public class TelaMusic implements Initializable {
 
     private boolean aleatorio = true;
-    private int repet;
+    private int repet = 1;
     private int repetidor;
     private MediaPlayer mediaPlayer;
     private Media media;
@@ -30,6 +32,7 @@ public class TelaMusic implements Initializable {
     private Timeline progressMusic;
     private Timeline nomeRotation;
     private int number;
+    private static final double MIN_CHANGE = 500;
 
     @FXML
     private Label nomeMusic;
@@ -64,11 +67,22 @@ public class TelaMusic implements Initializable {
         pausePlay();
         volumePlaymusic.valueProperty().addListener((observableValue, number, t1) -> mediaPlayer.setVolume(volumePlaymusic.getValue() * 0.01));
 
-        pgreceMusic.valueChangingProperty().addListener((observableValue, number, t1) -> {
-            mediaPlayer.pause();
-            Duration time = new Duration((pgreceMusic.getValue() * media.getDuration().toSeconds()) * 1000);
-            mediaPlayer.setStartTime(time);
-            mediaPlayer.play();
+        pgreceMusic.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+                if(!pgreceMusic.isValueChanging()){
+                    double time = mediaPlayer.getCurrentTime().toSeconds();
+                    double end = media.getDuration().toSeconds();
+                    System.out.println(time / end);
+                    System.out.println(t1.doubleValue());
+                    System.out.println(Math.abs(time - t1.doubleValue()));
+                    System.out.println("--------------------------------");
+                    if(Math.abs(time - t1.doubleValue()) > MIN_CHANGE){
+                        mediaPlayer.seek(Duration.millis(t1.doubleValue()));
+                    }
+
+                }
+            }
         });
     }
 
@@ -103,6 +117,7 @@ public class TelaMusic implements Initializable {
             }
         }
         limparmideia();
+        nomeRotation.stop();
         tocarMusica();
         resetRepetidor();
     }
@@ -117,11 +132,12 @@ public class TelaMusic implements Initializable {
             }
         }
         limparmideia();
+        nomeRotation.stop();
         tocarMusica();
         resetRepetidor();
     }
 
-    public void timeMusic(){
+    public void timeMusic() {
         progressMusic = new Timeline(new KeyFrame(Duration.seconds(1), ev -> {
             double current = mediaPlayer.getCurrentTime().toSeconds();
             double end = media.getDuration().toSeconds();
@@ -136,7 +152,6 @@ public class TelaMusic implements Initializable {
 
     public void cacelTimeMusic() {
         progressMusic.stop();
-        nomeRotation.stop();
     }
 
     public void aleatorioMusic() {
@@ -177,7 +192,7 @@ public class TelaMusic implements Initializable {
         }
     }
 
-    public void tocarMusicRepetVoltar(){
+    public void tocarMusicRepetVoltar() {
         if (repetidor > 0) {
             music.setPosicao(music.getPosicao() + 1);
             repetidor--;
@@ -191,13 +206,13 @@ public class TelaMusic implements Initializable {
         }
     }
 
-    public void nomeRotation(){
-        number =0;
-        nomeRotation = new Timeline(new KeyFrame(Duration.millis(150),ev -> {
-            if(number != music.nomeMusic().length()){
+    public void nomeRotation() {
+        number = 0;
+        nomeRotation = new Timeline(new KeyFrame(Duration.millis(170), ev -> {
+            if (number != music.nomeMusic().length()) {
                 nomeMusic.setText(music.nomeMusic().substring(number));
-                number ++;
-            }else{
+                number++;
+            } else {
                 number = 0;
             }
         }));

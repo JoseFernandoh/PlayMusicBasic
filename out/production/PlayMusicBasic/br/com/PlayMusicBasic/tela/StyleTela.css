@@ -3,7 +3,6 @@
 }
 .label{
     -fx-font-size: 14px;
-    -fx-alignment: center;
     -fx-text-fill : white;
 
 }
@@ -12,5 +11,11 @@
     -fx-background-insets: 1 1 1 1;
     -fx-padding: 0.25em;
 }
+
+.progressSlider {
+
+}
+
+
 
 

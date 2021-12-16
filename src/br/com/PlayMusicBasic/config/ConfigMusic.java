@@ -17,20 +17,20 @@ public class ConfigMusic {
         files = pegarMusicas.getFiles();
     }
 
-    public void pegarMusicas(){
+    public void pegarMusicas() {
         try {
-            Files.walkFileTree(Paths.get(System.getProperty("user.home")+"/Music"),pegarMusicas);
+            Files.walkFileTree(Paths.get(System.getProperty("user.home") + "/Music"), pegarMusicas);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public String audio(){
+    public String audio() {
         return files.get(posicao).toString();
     }
 
-    public String nomeMusic(){
-        return "                                                                                    "+files.get(posicao).getFileName().toString();
+    public String nomeMusic() {
+        return "                                                                                    " + files.get(posicao).getFileName().toString();
     }
 
     public void setPosicao(int posicao) {
@@ -41,7 +41,7 @@ public class ConfigMusic {
         return posicao;
     }
 
-    public int getquantidadeMusic(){
+    public int getquantidadeMusic() {
         return files.size();
     }
 }
