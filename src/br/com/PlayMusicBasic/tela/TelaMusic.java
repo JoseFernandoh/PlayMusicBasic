@@ -200,7 +200,7 @@ public class TelaMusic implements Initializable {
         pgreceMusic.valueProperty().addListener(((observableValue, number1, t1) -> {
             if(! pgreceMusic.isValueChanging()){
                 double time = mediaPlayer.getCurrentTime().toSeconds();
-                if(Math.abs(time - t1.doubleValue())> MIN_CHANGE){
+                if(Math.abs(time - t1.doubleValue()) > MIN_CHANGE){
                     mediaPlayer.seek(Duration.seconds(t1.doubleValue()));
                 }
             }
@@ -210,6 +210,9 @@ public class TelaMusic implements Initializable {
             if(! pgreceMusic.isValueChanging()){
                 pgreceMusic.setValue(t1.toSeconds());
                 timeInicio.setText(music.timerMusic((long) t1.toSeconds()));
+                if(pgreceMusic.getMax() - t1.toSeconds() <= 0.1){
+                    proximo();
+                }
             }
         }));
     }
