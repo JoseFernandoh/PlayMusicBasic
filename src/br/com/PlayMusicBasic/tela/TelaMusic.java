@@ -68,6 +68,7 @@ public class TelaMusic implements Initializable {
         statusPlay = false;
         Media media = new Media(new File(music.audio()).toURI().toString());
         mediaPlayer = new MediaPlayer(media);
+        volume();
         mediaPlayer.totalDurationProperty().addListener(((observableValue, duration, t1) -> {
             pgreceMusic.setMax(t1.toSeconds());
             timeFinal.setText(music.timerMusic((long) t1.toSeconds()));
@@ -75,7 +76,6 @@ public class TelaMusic implements Initializable {
         timeMusic();
         nomeRotation();
         pausePlay();
-        volumePlaymusic.valueProperty().addListener((observableValue, number, t1) -> mediaPlayer.setVolume(volumePlaymusic.getValue() * 0.01));
     }
 
     public void pausePlay() {
@@ -215,5 +215,10 @@ public class TelaMusic implements Initializable {
                 }
             }
         }));
+    }
+
+    public void volume(){
+        mediaPlayer.setVolume(volumePlaymusic.getValue() * 0.01);
+        volumePlaymusic.valueProperty().addListener((observableValue, number, t1) -> mediaPlayer.setVolume(volumePlaymusic.getValue() * 0.01));
     }
 }
