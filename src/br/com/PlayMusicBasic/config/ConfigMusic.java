@@ -1,11 +1,15 @@
 package br.com.PlayMusicBasic.config;
 
+import javafx.scene.media.Media;
+
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.List;
+import java.util.Random;
 
 public class ConfigMusic {
 
@@ -16,6 +20,7 @@ public class ConfigMusic {
     public ConfigMusic() {
         pegarMusicas();
         files = pegarMusicas.getFiles();
+        aleatoriaMusic();
     }
 
     public void pegarMusicas() {
@@ -26,12 +31,12 @@ public class ConfigMusic {
         }
     }
 
-    public String audio() {
-        return files.get(posicao).toString();
+    public Media audio() {
+        return new Media(files.get(posicao).toUri().toString());
     }
 
     public String nomeMusic() {
-        return "                                                                                    " + files.get(posicao).getFileName().toString();
+        return "                                                                           " + files.get(posicao).getFileName().toString();
     }
 
     public String timerMusic(long timer){
@@ -39,12 +44,27 @@ public class ConfigMusic {
         return String.format("%02d:%02d\n" ,total.toMinutesPart(),total.toSecondsPart());
     }
 
-    public void setPosicao(int posicao) {
-        this.posicao = posicao;
+    public void proximaMusic(){
+        if(posicao < (getquantidadeMusic() - 1)){
+            posicao++;
+        }else{
+            posicao = 0;
+        }
+
     }
 
-    public int getPosicao() {
-        return posicao;
+    public void voltarMusic(){
+        if(posicao != 0){
+            posicao--;
+        }else{
+            posicao = getquantidadeMusic() - 1;
+        }
+
+    }
+
+    public void aleatoriaMusic(){
+        Random musicAleatorio = new Random();
+        posicao = musicAleatorio.nextInt(getquantidadeMusic());
     }
 
     public int getquantidadeMusic() {

@@ -21,7 +21,7 @@ public class AcharMusic extends SimpleFileVisitor<Path> {
     }
 
     @Override
-    public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
+    public FileVisitResult visitFileFailed(Path file, IOException exc){
         return FileVisitResult.SKIP_SUBTREE;
     }
 
