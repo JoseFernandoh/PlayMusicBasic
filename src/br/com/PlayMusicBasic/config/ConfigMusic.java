@@ -2,7 +2,6 @@ package br.com.PlayMusicBasic.config;
 
 import javafx.scene.media.Media;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

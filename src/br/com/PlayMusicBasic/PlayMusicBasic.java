@@ -3,6 +3,7 @@ package br.com.PlayMusicBasic;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -19,6 +20,8 @@ public class PlayMusicBasic extends Application {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(Objects.requireNonNull(this.getClass().getResource("tela/TelaMusic.fxml")));
             primaryStage.setScene(new Scene(fxmlLoader.load()));
+            primaryStage.setTitle("PlayMusic");
+            primaryStage.getIcons().add(new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("tela/imgFundo/icon/PlayMusic.png"))));
             primaryStage.show();
         } catch (IOException e) {
             e.printStackTrace();

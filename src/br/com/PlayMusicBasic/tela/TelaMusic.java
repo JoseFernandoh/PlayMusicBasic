@@ -184,14 +184,14 @@ public class TelaMusic implements Initializable {
         }));
 
         // Configurar Dados do Time Percorrido da Musica
-        mediaPlayer.currentTimeProperty().addListener(((observableValue, number1, t1) -> {
+        mediaPlayer.currentTimeProperty().addListener((observableValue, number1, t1) -> {
             if (!pgreceMusic.isValueChanging()) {
                 pgreceMusic.setValue(t1.toSeconds());
                 timeInicio.setText(music.timerMusic((long) t1.toSeconds()));
-                if (pgreceMusic.getMax() - t1.toSeconds() <= 0.3) {
-                    configMusic();
-                }
             }
-        }));
+        });
+
+        // Ir para Proxima Musica ao Acabara
+        mediaPlayer.setOnEndOfMedia(this::proximo);
     }
 }
