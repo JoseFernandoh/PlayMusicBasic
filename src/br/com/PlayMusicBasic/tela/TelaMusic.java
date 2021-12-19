@@ -26,7 +26,7 @@ public class TelaMusic implements Initializable {
     private boolean statusPlay;
     private ConfigMusic music;
     private Timeline nomeRotation;
-    private int number;
+    private StringBuilder nome;
     private static final double MIN_CHANGE = 0.5;
 
     @FXML
@@ -63,6 +63,8 @@ public class TelaMusic implements Initializable {
     public void tocarMusica() {
         statusPlay = false;
         mediaPlayer = new MediaPlayer(music.audio());
+        nome = new StringBuilder(music.nomeMusic());
+        mediaPlayer.setVolume(volumePlaymusic.getValue() * 0.01);
         startSliderNomeMusic();
         pausePlay();
     }
@@ -141,18 +143,8 @@ public class TelaMusic implements Initializable {
     }
 
     public void startSliderNomeMusic() {
-        number = 0;
-        mediaPlayer.setVolume(volumePlaymusic.getValue() * 0.01);
-
         // Nome Rotacionando
-        nomeRotation = new Timeline(new KeyFrame(Duration.millis(170), ev -> {
-            if (number != music.nomeMusic().length()) {
-                nomeMusic.setText(music.nomeMusic().substring(number));
-                number++;
-            } else {
-                number = 0;
-            }
-        }));
+        nomeRotation = new Timeline(new KeyFrame(Duration.millis(170), ev -> nomeMusic.setText(nome.append(nome.charAt(0)).deleteCharAt(0).toString())));
         nomeRotation.setCycleCount(Animation.INDEFINITE);
         nomeRotation.play();
 

@@ -5,17 +5,19 @@ import java.nio.file.FileVisitResult;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.ArrayList;
-import java.util.List;
 
 public class AcharMusic extends SimpleFileVisitor<Path> {
 
-    private final List<Path> files = new ArrayList<>();
+    private final ConfigMusic music;
+
+    public AcharMusic(ConfigMusic music){
+        this.music = music;
+    }
 
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
         if (file.getFileName().toString().endsWith(".mp3")) {
-            files.add(file);
+            music.addMusic(file);
         }
         return FileVisitResult.CONTINUE;
     }
@@ -25,7 +27,4 @@ public class AcharMusic extends SimpleFileVisitor<Path> {
         return FileVisitResult.SKIP_SUBTREE;
     }
 
-    public List<Path> getFiles() {
-        return files;
-    }
 }

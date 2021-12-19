@@ -7,18 +7,18 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class ConfigMusic {
 
-    private final AcharMusic pegarMusicas = new AcharMusic();
-    private final List<Path> files;
+    private final AcharMusic pegarMusicas = new AcharMusic(this);
+    private final List<Path> files = new ArrayList<>();
     private int posicao;
 
     public ConfigMusic() {
         pegarMusicas();
-        files = pegarMusicas.getFiles();
         aleatoriaMusic();
     }
 
@@ -35,7 +35,7 @@ public class ConfigMusic {
     }
 
     public String nomeMusic() {
-        return "                                                                           " + files.get(posicao).getFileName().toString();
+        return files.get(posicao).getFileName().toString().concat("                    ");
     }
 
     public String timerMusic(long timer){
@@ -68,5 +68,9 @@ public class ConfigMusic {
 
     public int getquantidadeMusic() {
         return files.size();
+    }
+
+    public void addMusic(Path path){
+        files.add(path);
     }
 }
