@@ -53,6 +53,9 @@ public class TelaMusic implements Initializable {
     @FXML
     private Slider volumePlaymusic;
 
+    private void addimg(ImageView img, String surce){
+        img.setImage(new Image(Objects.requireNonNull(this.getClass().getResourceAsStream(surce))));
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -72,11 +75,11 @@ public class TelaMusic implements Initializable {
     public void pausePlay(){
         if (statusPlay) {
             mediaPlayer.pause();
-            imgPausePlay.setImage(new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("imgFundo/icon/Play.png"))));
+            addimg(imgPausePlay,"imgFundo/icon/Play.png");
             statusPlay = false;
         } else {
             mediaPlayer.play();
-            imgPausePlay.setImage(new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("imgFundo/icon/Pause.png"))));
+            addimg(imgPausePlay,"imgFundo/icon/Pause.png");
             statusPlay = true;
         }
     }
@@ -118,25 +121,25 @@ public class TelaMusic implements Initializable {
 
     public void aleatorio(){
         if (aleatorio) {
-            imgaleatorio.setImage(new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("imgFundo/icon/aleatorio.png"))));
+            addimg(imgaleatorio,"imgFundo/icon/aleatorio.png");
             aleatorio = false;
         } else {
-            imgaleatorio.setImage(new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("imgFundo/icon/aleatorioSelect.png"))));
+            addimg(imgaleatorio,"imgFundo/icon/aleatorioSelect.png");
             aleatorio = true;
         }
     }
 
     public void repet() {
         if (repet == -1) {
-            imgrepet.setImage(new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("imgFundo/icon/repet.png"))));
+            addimg(imgrepet,"imgFundo/icon/repet.png");
             repetidor = 0;
             repet = 0;
         } else if (repet == 0) {
-            imgrepet.setImage(new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("imgFundo/icon/repet1.png"))));
+            addimg(imgrepet,"imgFundo/icon/repet1.png");
             repetidor = 1;
             repet = 1;
         } else {
-            imgrepet.setImage(new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("imgFundo/icon/repetinfynit.png"))));
+            addimg(imgrepet,"imgFundo/icon/repetinfynit.png");
             repetidor = Integer.MAX_VALUE;
             repet = -1;
         }
@@ -144,7 +147,8 @@ public class TelaMusic implements Initializable {
 
     public void startSliderNomeMusic() {
         // Nome Rotacionando
-        nomeRotation = new Timeline(new KeyFrame(Duration.millis(170), ev -> nomeMusic.setText(nome.append(nome.charAt(0)).deleteCharAt(0).toString())));
+        nomeRotation = new Timeline(new KeyFrame(Duration.millis(170), ev ->
+                nomeMusic.setText(nome.append(nome.charAt(0)).deleteCharAt(0).toString())));
         nomeRotation.setCycleCount(Animation.INDEFINITE);
         nomeRotation.play();
 
