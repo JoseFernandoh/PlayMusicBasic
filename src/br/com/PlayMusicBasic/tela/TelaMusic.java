@@ -16,18 +16,18 @@ import javafx.util.Duration;
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
 public class TelaMusic implements Initializable {
 
+    private static final double MIN_CHANGE = 0.5;
     private boolean aleatorio = true;
     private int repet;
     private int repetidor;
     private MediaPlayer mediaPlayer;
-    private boolean statusPlay;
     private ConfigMusic music;
     private Timeline nomeRotation;
     private StringBuilder nome;
-    private static final double MIN_CHANGE = 0.5;
 
     @FXML
     private Label nomeMusic;
@@ -53,10 +53,6 @@ public class TelaMusic implements Initializable {
     @FXML
     private Slider volumePlaymusic;
 
-    private void addimg(ImageView img, String surce){
-        img.setImage(new Image(Objects.requireNonNull(this.getClass().getResourceAsStream(surce))));
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         music = new ConfigMusic();
@@ -64,59 +60,25 @@ public class TelaMusic implements Initializable {
     }
 
     public void tocarMusica() {
-        statusPlay = false;
         mediaPlayer = new MediaPlayer(music.audio());
         nome = new StringBuilder(music.nomeMusic());
         mediaPlayer.setVolume(volumePlaymusic.getValue() * 0.01);
         startSliderNomeMusic();
-        pausePlay();
     }
 
     public void pausePlay(){
-        if (statusPlay) {
+        if (MediaPlayer.Status.PLAYING == mediaPlayer.getStatus())
             mediaPlayer.pause();
-            addimg(imgPausePlay,"imgFundo/icon/Play.png");
-            statusPlay = false;
-        } else {
+        else
             mediaPlayer.play();
-            addimg(imgPausePlay,"imgFundo/icon/Pause.png");
-            statusPlay = true;
-        }
-    }
-
-    public void configMusic() {
-        nomeRotation.stop();
-        mediaPlayer.stop();
-        tocarMusica();
-    }
-
-    public boolean testButoes(){
-        if(repetidor > 0){
-            repetidor--;
-            if(repetidor == 0){
-                repet = -1;
-                repet();
-            }
-            return false;
-        }else if (aleatorio){
-            music.aleatoriaMusic();
-            return false;
-        }
-        return true;
     }
 
     public void proximo(){
-        if(testButoes()){
-            music.proximaMusic();
-        }
-        configMusic();
+        mudandoMusic((ConfigMusic) -> music.proximaMusic());
     }
 
     public void voltar(){
-        if (testButoes()){
-            music.voltarMusic();
-        }
-        configMusic();
+        mudandoMusic((ConfigMusic) -> music.voltarMusic());
     }
 
     public void aleatorio(){
@@ -145,7 +107,7 @@ public class TelaMusic implements Initializable {
         }
     }
 
-    public void startSliderNomeMusic() {
+    private void startSliderNomeMusic() {
         // Nome Rotacionando
         nomeRotation = new Timeline(new KeyFrame(Duration.millis(170), ev ->
                 nomeMusic.setText(nome.append(nome.charAt(0)).deleteCharAt(0).toString())));
@@ -189,5 +151,41 @@ public class TelaMusic implements Initializable {
 
         // Ir para Proxima Musica ao Acabara
         mediaPlayer.setOnEndOfMedia(this::proximo);
+
+        configEstadoMedia();
+    }
+
+    private void configEstadoMedia(){
+        mediaPlayer.setOnPlaying(() ->
+            addimg(imgPausePlay,"imgFundo/icon/Pause.png"));
+
+        mediaPlayer.setOnPaused(() ->
+            addimg(imgPausePlay,"imgFundo/icon/Play.png"));
+
+        mediaPlayer.setOnStopped(() -> {
+            nomeRotation.stop();
+            tocarMusica();
+        });
+
+        pausePlay();
+    }
+
+    private void addimg(ImageView img, String surce){
+        img.setImage(new Image(Objects.requireNonNull(this.getClass().getResourceAsStream(surce))));
+    }
+
+    private void mudandoMusic(Consumer<ConfigMusic> e){
+        if(repetidor > 0){
+            repetidor--;
+            if(repetidor == 0){
+                repet = -1;
+                repet();
+            }
+        }else if (aleatorio){
+            music.aleatoriaMusic();
+        }else {
+            e.accept(music);
+        }
+        mediaPlayer.stop();
     }
 }

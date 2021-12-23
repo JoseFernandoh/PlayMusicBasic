@@ -9,7 +9,7 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class ConfigMusic {
 
@@ -62,8 +62,7 @@ public class ConfigMusic {
     }
 
     public void aleatoriaMusic(){
-        Random musicAleatorio = new Random();
-        posicao = musicAleatorio.nextInt(getquantidadeMusic());
+        posicao = ThreadLocalRandom.current().nextInt(getquantidadeMusic());
     }
 
     public int getquantidadeMusic() {
