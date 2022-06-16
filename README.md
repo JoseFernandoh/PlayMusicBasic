@@ -5,5 +5,5 @@ Esse projeto foi criado apenas para Windows, é um programa onde procura as musi
 Desenvolvido em Java utilizando o JavaFX como Interface do programa
 
 <div align="center">
-  <img src="https://user-images.githubusercontent.com/87836325/174065597-3e933b07-96cc-4912-8bd0-73f7498313e1.png" width="150px"/>
+  <img src="https://user-images.githubusercontent.com/87836325/174065597-3e933b07-96cc-4912-8bd0-73f7498313e1.png" width="350px"/>
 </div
